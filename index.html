@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<!-- This is based on DillingerLee's great template here:
+https://github.com/Team-Code/KA_Offline -->
+<html> 
+ <head>
+    <title>Processing.JS inside Webpages: Template</title> 
+</head>
+ <body>
+
+<img width="222" height="144" class="sd-res logo-normal" alt="Zochg.com" src="Drawing.png">
+
+
+
+<h2> Hi there welcome to --- JAR CLICKER --- it is a game like cookie clicker but not a cookie it's a jar you click on </h2>
+
+
+    <p align="center"> 
+	<!--This draws the Canvas on the webpage -->
+      <canvas id="mycanvas"></canvas> 
+    </p>
+ </body>
+ 
+ <!-- Run all the JavaScript stuff -->
+ <!-- Include the processing.js library -->
+ <!-- See https://khanacademy.zendesk.com/hc/en-us/articles/202260404-What-parts-of-ProcessingJS-does-Khan-Academy-support- for differences -->
+ <script src="processing.min.js"></script> 
+ 
+ <!--
+DOWNLOAD:
+Notepad++
+Chrome
+
+
+ -->
+ 
+ <script>
+ 
+function setCookie(varNavn, value) {
+
+// Build the expiration date string:
+var expiration_date = new Date();
+expiration_date.setFullYear(expiration_date.getFullYear() + 1);
+
+var expires = new Date();
+ expires = new Date(new Date().getTime() + parseInt(expires) * 1000 * 60 * 60 * 24);
+
+
+document.cookie = varNavn + "=" + value + ";path=/;expires=" + expires.toGMTString()+";domain=zochgcom.github.io";
+}
+
+function getCookie(varNavn) {
+    var name = varNavn + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+ 
+    var sketchProc = function(processingInstance) {
+     with (processingInstance) {
+        size(500, 500); 
+        frameRate(30);
+		
+		
+		
+		
+		//?Jars
+		var NewsX = 40;
+		var NewsY = 40;
+        var NewsHoojde = 400;
+        var NewsBredde = 335;
+        var Newsjar = false;
+		
+        var ShopjarX = 40;
+        var ShopjarY =  40;
+        var ShopjarBredde = 335;
+        var ShopjarHoojde = 400;
+        var Shopjar = false;
+		
+        var TvjarX = 40;
+        var TvjarY = 40;
+        var TvHoojde = 400;
+        var TvBredde = 335;
+        var Tvjar = false;
+		
+        var ForjarX = 40;
+        var ForjarY = 40;
+        var ForjarBredde = 335;
+        var ForjarHoojde = 400;		
+		var Forjar = false;
+		
+		//creditAd
+		var creditX = 40;
+		var creditY = 40;
+		var creditBredde = 400;
+		var creditHoojde = 335;
+		
+		
+		//Credit's
+		var creditsignX = 250;
+		var creditsingY = 200;
+		var creditOpen = false;
+		var creditsignBredde = 180;
+		var creditssignHoojde = 180;
+		
+      
+	  //shoppen
+	  var shopsignX = 350;
+	  var shopsignY = 400;
+	 var shopON = false;
+	 var shopsignBredde = 180;
+	 var shopsignHoojde = 180;
+	 
+	 //skoven
+	 var skovBredde = 80;
+	 var skovHoojde = 80;
+	 var skovX = 400;
+	 var skovY = 310;
+	 
+	 //info tegn
+	 var infoX = 335;
+	 var infoY = 335;
+	var infoBredde = 40;
+	var infoHoojde = 40;
+	
+	var infoX2 = 335;
+	 var infoY2 = 230;
+	var infoBredde2 = 40;
+	var infoHoojde2 = 40;
+	
+	var infoX3 = 335;
+	 var infoY3 = 130;
+	var infoBredde3 = 40;
+	var infoHoojde3 = 40;
+	
+	var infoX4 = 335;
+	 var infoY4 = 30;
+	var infoBredde4 = 40;
+	var infoHoojde4 = 40;
+	 
+	 //pris
+	 var skovpris = 50;
+	 var butikpris = 100;
+	 var avispris = 350;
+	 var tvpris = 10000;
+	 
+	 //bigcoin			
+	var bigcoinX = random(100,300);
+	var bigcoinY = random(100,300);
+	var bigcoinHoojde = 100;
+	var bigcoinBredde = 100;
+	var bigcoinCountdown = random(15000,20000);
+	
+	 //Butik
+	 var butikBredde = 80;
+	 var butikHoojde = 80;
+	 var butikX = 400;
+	 var butikY = 210;
+	 
+	 //avis
+	 var avisBredde = 100;
+	 var avisHoojde = 80;
+	 var avisX = 400;
+	 var avisY = 110;
+	 
+	 //tv
+	 var tvBredde = 80;
+	 var tvHoojde = 80;
+	 var tvX = 400;
+	 var tvY = 10;
+	 
+	 //Krukken / Jar
+	 var x = -100;
+	 var y = 80;
+	 var jarSizeX = 100;
+	 var jarSizeY = 100;
+	 
+	 //penge
+	 var money = 0;
+	 money = parseInt( getCookie("money")); //setCookie("money", money);
+	  
+	 var coinX = 200 - 25;
+	 var coinY = 200 - 25;
+	 
+	 //penge i luften
+	 var coinListX = [];
+	 var coinListY = [];
+	 var coinsFalling = [];
+	 
+	 //Skove vi har koobt
+	 var skovNumber = 0;
+	 
+	 //butikker vi har koobt 
+	 var butikNumber = 0;
+	 
+	 //aviser vi har koobt
+	 var avisNumber = 0;
+	 
+	 //tv'er vi har koobt 
+	 var tvNumber = 0;
+	 
+	skovNumber =  parseInt( getCookie("skovNumber"));
+	butikNumber =  parseInt( getCookie("butikNumber"));
+	avisNumber =  parseInt( getCookie("avisNumber"));
+	tvNumber =  parseInt( getCookie("tvNumber"));
+	  
+	  
+	
+	 
+	 //
+	 var autoClicktime = 1000; //millis()
+	 var autoClickTimestamp = millis();
+	 
+	 var mouseClicked = function(){
+	 
+	 if (mouseX > x - 20 && mouseX < x + 20 + jarSizeX && mouseY > y && mouseY < y + jarSizeY ) {
+	  money += 1 + (1 * skovNumber ) + (4 * butikNumber) ;
+	  coinListX.push(x);
+	  coinListY.push(y);
+	
+	  coinY = 200 - 25;
+		
+	  var coin = {};
+	  coin.x = random(0,width);
+	  coin.y = 0;
+	  coinsFalling.push(coin);
+	  
+	 }
+	 //skoven 
+	 
+	 if (money > skovpris && shopON  && mouseX > skovX && mouseX < skovX + skovBredde && mouseY > skovY && mouseY < skovY + skovHoojde){
+		money = money - skovpris;
+		shopON = true;
+		skovNumber = skovNumber + 1;
+		skovpris = skovpris + 75;
+		
+		}
+		//butik
+		if (money > butikpris && shopON  && mouseX > butikX && mouseX < butikX + butikBredde && mouseY > butikY && mouseY < butikY + butikHoojde){
+		money = money - butikpris;
+		shopON = true;
+		butikNumber = butikNumber + 1;
+		butikpris = butikpris + 100;
+		}
+		//avis
+		if (money > avispris && shopON  && mouseX > avisX && mouseX < avisX + avisBredde && mouseY > avisY && mouseY < avisY + avisHoojde){
+		money = money - avispris;
+		shopON = true;
+		avisNumber = avisNumber + 1;
+		avispris = avispris + 450;
+		}
+		//tv
+		if (money > tvpris && shopON  && mouseX > tvX && mouseX < tvX + tvBredde && mouseY > tvY && mouseY < tvY + tvHoojde){
+		money = money - tvpris;
+		shopON = true;
+		tvNumber = tvNumber + 1;
+		tvpris = tvpris + 10000;
+		}
+	 
+	 
+	  if (mouseX > shopsignX && mouseX < shopsignX + shopsignBredde && mouseY > shopsignY && mouseY < shopsignY + shopsignHoojde ) {
+	
+	if(shopON ===true){
+	shopON = false;
+	}else{
+	shopON = true;
+	}
+	
+		}
+	
+		
+	Forjar = false;
+    Shopjar = false;
+	Newsjar = false;	
+    Tvjar = false;	
+	
+		//Forrest Open
+		
+	if (shopON === true && mouseX > infoX && mouseX < infoX + infoBredde && mouseY > infoY && mouseY < infoY + infoHoojde){
+	if(Forjar ===true){
+	Forjar = false;
+	}else{
+	Forjar = true;
+	}
+	}
+	//Shop Open
+	
+	 if (shopON === true && mouseX > infoX2 && mouseX < infoX2 + infoBredde2 && mouseY > infoY2 && mouseY < infoY2 + infoHoojde2){
+	if(Shopjar ===true){
+	Shopjar = false;
+	}else{
+	Shopjar = true;
+	}
+	}
+	//Newspaper Open
+	
+	if (shopON === true && mouseX > infoX3 && mouseX < infoX3 + infoBredde3 && mouseY > infoY3 && mouseY < infoY3 + infoHoojde3){
+	if(Newsjar ===true){
+	Newsjar = false;
+	}else{
+	Newsjar = true;
+	}
+	}
+	//Tv Open
+	
+	if (shopON === true && mouseX > infoX4 && mouseX < infoX4 + infoBredde4 && mouseY > infoY4 && mouseY < infoY4 + infoHoojde4){
+	if(Tvjar ===true){
+	Tvjar = false;
+	}else{
+	Tvjar = true;
+	}
+	}
+	//Credit'ssign Open Funtion
+	
+	  if (mouseX > 150 && mouseX < 150 + 170 && mouseY > 410 && mouseY < 410 + 100 ) {
+	
+	if(creditOpen ===true){
+	creditOpen = false;
+	}else{
+	creditOpen = true;
+	}
+	
+		}
+	
+	 };
+	 
+	 /* @pjs preload="Newsjar.png"; */
+	var Newsa = loadImage("News_jar.png");
+	  
+	 /* @pjs preload="Forrestjar.png"; */
+	var Fora = loadImage("Forrest_jar.png");
+	 
+	 /* @pjs preload="TVjar.png"; */
+	var Tva = loadImage("TV_jar.png");
+	 
+	 /* @pjs preload="Shopjar.png"; */
+	var Shopa = loadImage("Shop_jar.png");
+	 
+	 /* @pjs preload="Credits.png"; */
+	var creditAd = loadImage("Credits.png");
+	 
+	/* @pjs preload="Jar2.png"; */
+	var creditsignImg = loadImage("CreditSign.png");
+	 
+	 /* @pjs preload="Jar2.png"; */
+	var jarImg = loadImage("New_jar.png");
+
+	 /* @pjs preload="Money 1+.png"; */
+	var moneyImg = loadImage("Money 1+.png");
+	
+	 /* @pjs preload="skov.png"; */
+	var skovImg = loadImage("skov.png");
+	
+	
+	/* @pjs preload="Shop-Knap.png"; */
+	var shopImg = loadImage("Shop-Knap.png");
+
+	/* @pjs preload="shop_image.png"; */
+	var butikImg = loadImage("shop_image.png");
+	
+	/* @pjs preload="Avis.png"; */
+	var avisImg = loadImage("Avis.png");
+	
+	/* @pjs preload="tv.png"; */
+	var tvImg = loadImage("tv.png");
+	
+	/* @pjs preload="Info.png"; */
+	var infoImg = loadImage("Info.png");
+	
+	/* @pjs preload="coin.png"; */
+	var BigcoinImg = loadImage("coin.png");
+	
+	  var draw = function(){
+	  
+	  setCookie("money", money);
+	  setCookie("skovNumber", skovNumber);
+	  setCookie("butikNumber", butikNumber);
+	  setCookie("avisNumber", avisNumber);
+	  setCookie("tvNumber", tvNumber);
+	  
+	  
+	  
+	background(245,245,245);
+	//jar 
+	if(x < width / 2 - jarSizeX / 2 ) {
+	 x += 1;
+	   }
+	   
+	   if(y < height / 2 - jarSizeY / 2 ) {
+	 y += 1;
+	   }
+	   
+	   image(jarImg, x - 25, y, jarSizeX, jarSizeY);
+	  
+	fill (0,0,0)
+	text("Money: "+ money, 280,20);
+	
+	if (autoClicktime < millis() - autoClickTimestamp){
+	autoClickTimestamp = millis();
+	money += (5 * avisNumber) + (50 * tvNumber) ;
+	}  
+	
+	for (var i = coinListX.length -1; i >= 0; i--){
+	
+	//image(moneyImg, coinListX[i], coinListY[i], 50, 50);
+	
+	coinListY[i] -= 10;
+
+	if (coinListY[i] < 0 ){
+	 coinListY.splice(i,1);
+	 coinListX.splice(i, 1);
+	 
+	}
+
+	}
+	
+	for (var i = coinsFalling.length -1; i >= 0; i--){
+	
+	var coin = coinsFalling[i];
+	
+	image(moneyImg, coin.x, coin.y, 50, 50);
+	
+	coin.y += 10;
+
+	if (coin.y > height ){
+	 coinsFalling.splice(i,1);
+	 
+	}
+
+	}
+	
+	 
+	   image(shopImg,shopsignX , shopsignY, shopsignBredde, shopsignHoojde);
+	  
+	  if(shopON === true){
+	  
+	  var seconds = Math.round(millis() / 1000);
+		text("Time Played: " + seconds, 15, 95);
+	    
+	    image(skovImg,400,310,80,80);
+		text(skovpris,430,405);
+		text("Forrest:  " + skovNumber,15,15);
+		image(butikImg,400,210,80,80);
+		text (butikpris,425,300);
+		text("Shop:  " + butikNumber,15,35);
+		image(avisImg,390,110,100,80);
+		text(avispris,430,200);
+		text("Newspaper:  " + avisNumber,15,55);
+		image(tvImg,400,10,80,80);
+		text(tvpris,425,100);
+		text("Tv:  " + tvNumber,15,75);
+		image(infoImg,345,340,30,30);
+		image(infoImg,345,230,30,30);
+		image(infoImg,345,130,30,30);
+		image(infoImg,345,30,30,30);
+		
+	  }
+	 
+	 
+	  bigcoinCountdown = bigcoinCountdown - 1;
+	  
+	   //time to bigcoin
+	 if( bigcoinCountdown <= 0){
+	 
+	 image(BigcoinImg,bigcoinX,bigcoinY,bigcoinHoojde,bigcoinBredde);
+	 if (mouseClicked && mouseX > bigcoinX && mouseX < bigcoinX + bigcoinBredde && mouseY > bigcoinY && mouseY < bigcoinY + bigcoinHoojde) {
+	 bigcoinCountdown = random(15000,20000);
+	 money = money + floor(random(1500,6000));
+	 
+	 }
+	 }
+	
+	image(creditsignImg,150,410,170,100);
+	
+	if (creditOpen === true) {
+	image(creditAd,creditX,creditY,creditBredde,creditHoojde);
+	text("Click on the sign again to close",150,400);
+	
+	
+	}
+	
+	if (Forjar === true) {
+	image(Fora,ForjarX,ForjarY,ForjarBredde,ForjarHoojde);
+	text("Click anywhere to close",150,30);
+	
+	
+	}
+	
+	
+	
+	if (Shopjar === true) {
+	image(Shopa,ShopjarX,ShopjarY,ShopjarBredde,ShopjarHoojde);
+	text("Click anywhere to close",150,30);
+	
+	
+	
+	
+	
+	
+	}
+	
+	
+	
+	if (Newsjar === true) {
+	image(Newsa,NewsX,NewsY,NewsBredde,NewsHoojde);
+	text("Click anywhere to close",150,30);
+	
+	
+	
+	
+	}
+	
+	
+	
+	
+	
+	
+	if (Tvjar === true) {
+	image(Tva,TvjarX,TvjarY,TvBredde,TvHoojde);
+	text("Click anywhere to close",150,30);
+	
+	
+	
+	
+	
+	}
+	text("V:0.8",15,490);
+	
+	  }
+	  
+    }};
+	
+	
+	
+
+    // Get the canvas that Processing-js will use
+    var canvas = document.getElementById("mycanvas"); 
+    // Pass the function sketchProc (defined in myCode.js) to Processing's constructor
+    var processingInstance = new Processing(canvas, sketchProc); 
+ </script>
+
+</html>
